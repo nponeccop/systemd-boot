@@ -20,9 +20,9 @@ Good documentation regarding 'systemd-boot' can be found here:
 * [freedesktop.org - systemd-boot UEFI Boot Manager](http://www.freedesktop.org/wiki/Software/systemd/systemd-boot)
 * [wiki.archlinux.org - systemd-boot](http://wiki.archlinux.org/index.php/Systemd-boot)
 
-In addition, the repository provides helper scripts which do the following:
+The helper scripts in the main folder do the following:
 
-* Download and prepare optional third party software dependencies, e.g. the precompiled UEFI boot loader images, OVMF images, Syslinux, sample kernel/initramfs files, etc. 
+* Download and prepare third party software dependencies, e.g. the precompiled UEFI boot loader images, OVMF images, Syslinux, sample kernel/initramfs files, etc. 
 * Genrate sample 'El Torito' boot image as described in UEFI sepcification 2.7, sections 13.3.1.x and 13.3.2.x.
 * Generate sample ISO image with UEFI boot support.
 * Run [QEMU](https://www.qemu.org) with UEFI enabled configuration and attached sample ISO image.
@@ -31,4 +31,4 @@ Note that you need QEMU on your system in order to test the sample ISO images. Y
 
 * ``sudo apr install qemu``
 
-Please consider all helper scritps just as helper scripts. You can use them to gain some more knowledge about the 'systemd-boot' UEFI boot loader insfrastructure and how to create UEFI compatible ISO images properly.
+Please consider all helper scritps just as helper scripts. You can use them to gain some more knowledge about the 'systemd-boot' UEFI boot loader insfrastructure and how to create UEFI compatible ISO images.
