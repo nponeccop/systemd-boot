@@ -1,4 +1,4 @@
-# systemd-boot
+## systemd-boot
 
 ``systemd-boot`` is a simple UEFI boot manager. Its main job is to launch the selected boot menu entry. 'systemd-boot' leverages APIs provided by the UEFI and offloads all the heavy lifting to the firmware (e.g. loading files from disk, executing EFI images). This allows for very minimal implementation, but feature complete to support common usecases (desktop, laptop).
 
@@ -48,14 +48,14 @@ I had no such build issues on 'x86_64' machine.
 
 Note that installation of 'sytemd-boot' to the EFI System Partition (if you want to use 'systemd-boot' as main boot loader on your machine) must be handled separately. It is usually done by ``bootctl`` command line utility from the 'systemd' package.
 
-### How to use
+## How to use
 
 Good documentation regarding 'systemd-boot' can be found here:
 
 * [freedesktop.org - systemd-boot UEFI Boot Manager](http://www.freedesktop.org/wiki/Software/systemd/systemd-boot)
 * [wiki.archlinux.org - systemd-boot](http://wiki.archlinux.org/index.php/Systemd-boot)
 
-### Dependencies
+## Dependencies
 
 * gnu-efi - mandatory build dependency
 * dh-autoreconf - mandatory build dependency
