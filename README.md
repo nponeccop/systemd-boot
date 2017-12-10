@@ -29,6 +29,6 @@ The helper scripts in the main folder do the following:
 
 Note that you need QEMU on your system in order to test the sample ISO images. You can install it like this (Ubuntu):
 
-* ``sudo apr install qemu``
+* ``sudo apt install qemu``
 
 Please consider all helper scritps just as helper scripts. You can use them to gain some more knowledge about the 'systemd-boot' UEFI boot loader insfrastructure and how to create UEFI compatible ISO images.
