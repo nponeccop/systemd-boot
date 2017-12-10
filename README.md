@@ -5,9 +5,9 @@
 Precompiled 'systemd-boot' UEFI images and sample configuration files are available in the [release](https://github.com/ivandavidov/systemd-boot/releases) section. The latest stable release is [systemd-boot_10-Dec-2017](https://github.com/ivandavidov/systemd-boot/releases/tag/systemd-boot_10-Dec-2017). Each release contains the following artifacts:
 
 * UEFI compliant directory structure with general purpose 'systemd-boot' UEFI boot loader images for 'x86' and 'x86_64' architectures.
-* Sample configuration files for 'x86' and 'x86_64' machines which describe the boot entries for Minimal Linux Live.
+* Sample configuration files for 'x86' and 'x86_64' machines which describe the boot entries for [Minimal Linux Live](http://github.com/ivandavidov/minimal "Minimal Linux Live").
 
-The primary use case of this project is to provide precompiled general purpose 'systemd-boot' UEFI boot loader images which in turn support the UEFI boot process of [Minimal Linux Live](http://github.com/ivandavidov/minimal "Minimal Linux Live").
+The primary use case of this project is to provide precompiled general purpose 'systemd-boot' UEFI boot loader images which in turn support the UEFI boot process of Minimal Linux Live.
 
 The raw source code, along with build documentation can be found in the [project](https://github.com/ivandavidov/systemd-boot/tree/master/project) folder. Most probably you don't need it, unless you really want to build 'systemd-boot' from scratch.
 
