@@ -33,6 +33,7 @@ mll_32() {
   mkdir -p work/mll
   cd work/mll
   wget -O mll-32.iso -c http://minimal.idzona.com/download/minimal_linux_live_20-Jan-2017_32-bit.iso
+  rm -rf mll-32
   xorriso -osirrox on -indev mll-32.iso -extract / mll-32
   chmod -R ugo+rw mll-32 mll-32/*
   cp mll-32/kernel.xz kernel-32.xz
@@ -44,6 +45,7 @@ mll_64() {
   mkdir -p work/mll
   cd work/mll
   wget -O mll-64.iso -c http://minimal.idzona.com/download/minimal_linux_live_20-Jan-2017_64-bit.iso
+  rm -rf mll-64
   xorriso -osirrox on -indev mll-64.iso -extract / mll-64
   chmod -R ugo+rw mll-64 mll-64/*
   cp mll-64/kernel.xz kernel-64.xz
@@ -52,9 +54,10 @@ mll_64() {
 }
 
 systemd_boot_precompiled() {
-  mkdir -p work/uefi_root
-  cd work/uefi_root
-  wget -O systemd-boot.tar.xz -c http://github.com/ivandavidov/systemd-boot/releases/download/untagged-9be837de4fff0ff8709e/systemd-boot_10-Dec-2017.tar.xz
+  rm -rf work/uefi_root
+  wget -O work/systemd-boot.tar.xz -c \
+    https://github.com/ivandavidov/systemd-boot/releases/download/systemd-boot_10-Dec-2017/systemd-boot_10-Dec-2017.tar.xz
+  cd work
   tar -xvf systemd-boot.tar.xz
   cd `ls -d systemd-boot_*`
   cp -r * ..
@@ -63,11 +66,11 @@ systemd_boot_precompiled() {
   cd $SRC_DIR
 }
 
-#ovmf_x86
-#ovmf_x86_64
-#syslinux
-#mll_32
-#mll_64
+ovmf_x86
+ovmf_x86_64
+syslinux
+mll_32
+mll_64
 systemd_boot_precompiled
 
 cd $SRC_DIR
