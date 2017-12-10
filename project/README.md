@@ -8,15 +8,15 @@ The primary use case of this project is to provide precompiled 'systemd-boot' EF
 
 ## Installation
 
-If you want to use the precompiled EFI stubs, then all you need to do is to download them from the [todo-release](http://todo-release.todo) section. You don't need any external dependencies. Just download the EFI stubs and use them.
-
-If you came here from the [Minimal Linux Live project](http://github.com/ivandavidov/minimal "Minimal Linux Live"), then you need to add just 2 more build dependencies (Ubuntu):
-
-``sudo apt install gnu-efi dh-autoreconf``
+If you want to use the precompiled EFI stubs, then all you need to do is to download them from the [todo-release](http://todo-release.todo) section. You don't need any external dependencies. Just download the EFI stubs and use them. You may want to take a look at the sample configuration files which are also provided in the 'release' section.
 
 If you want to build 'systemd-boot' from scratch, then you'll need to add all Minimal Linux Live dependencies and the 'systemd-boot' build dependencies (Ubuntu):
 
 ``sudo apt install wget make gawk gcc bc xorriso gnu-efi dh-autoreconf``
+
+If you came here from the [Minimal Linux Live project](http://github.com/ivandavidov/minimal "Minimal Linux Live"), then you need to add just 2 more build dependencies (Ubuntu):
+
+``sudo apt install gnu-efi dh-autoreconf``
 
 These are the steps you need to follow in order to build and install 'systemd-boot':
 
@@ -36,15 +36,19 @@ make
 make install
 ```
 
-The above set of commands will preapre and install all 'systemd-boot' artifacts in the local folder ``project/systemd-boot_installed/usr``. You can find the generated EFI boot loader image here:
+The above set of commands will preapre and install all 'systemd-boot' artifacts in the following local folder:
 
-``project/systemd-boot_installed/usr/lib/systemd-boot/systemd-boot{ARCH}.efi``
+``systemd-boot_installed/usr``.
 
-On 32-bit x86 machines you may need to manually tweak the 'configure.ac' script and/or some of the 'gnu-efi' header locations because the 'gnu-efi' headers are installed for 'ia32' architectures but the actual architecture is most likely 'i686' or similar. The same applies for the 'gnu-efi' linker which contains the architecture in its name 'ia32' and it may not be resolved if the actual architecture is 'i686' or similar.
+You can find the generated EFI boot loader image here:
+
+``systemd-boot_installed/usr/lib/systemd-boot/systemd-boot{ARCH}.efi``
+
+On 32-bit x86 machines you may need to manually tweak the 'configure.ac' script and/or some of the 'gnu-efi' header locations, because the 'gnu-efi' headers are installed for 'ia32' architectures but the actual architecture is most likely 'i686' or similar. The same applies for the 'gnu-efi' linker which contains the architecture in its file name (e.g. 'ia32') and it may not be resolved if the actual architecture is 'i686' or similar.
 
 I had no such build issues on 'x86_64' machine.
 
-Note that installation of 'sytemd-boot' to the EFI System Partition must be handled separately. It is usually done by ```bootctl``` command line utility from the 'systemd' package.
+Note that installation of 'sytemd-boot' to the EFI System Partition (if you want to use 'systemd-boot' as main boot loader on your machine) must be handled separately. It is usually done by ``bootctl`` command line utility from the 'systemd' package.
 
 ### How to use
 
@@ -53,16 +57,20 @@ Good documentation regarding 'systemd-boot' can be found here:
 * [freedesktop.org - systemd-boot UEFI Boot Manager](http://www.freedesktop.org/wiki/Software/systemd/systemd-boot)
 * [wiki.archlinux.org - systemd-boot](http://wiki.archlinux.org/index.php/Systemd-boot)
 
-The [todo-release](http://release-todo.toto) archive contains the folowing:
+You can find the following in the [todo-release](http://release-todo.toto) section:
 
 * UEFI compliant directory structure with 'systemd-boot' EFI stub images (for 'x86' and 'x86_64' architectures) as default boot loaders.
 * Sample configuration files for 'x86' and 'x86_64' machines which describe the boot entries for Minimal Linux Live.
-* Some helper shell scripts:
-  * Genrate sample 'El Torito' boot image as described in UEFI sepcification 2.7, sections 13.3.1.x and 13.3.2.x.
-  * Generate sample ISO image with UEFI boot support.
-  * Generate sample ISO image with UEFI and legacy BIOS boot support.
-  * Download and prepare optional external dependencies, e.g. OVMF, Syslinux, sample kernel/initramfs files, etc.
-  * etc.
+
+In addition, the project repository provides additional helper scripts:
+
+* Genrate sample 'El Torito' boot image as described in UEFI sepcification 2.7, sections 13.3.1.x and 13.3.2.x.
+* Generate sample ISO image with UEFI boot support.
+* Generate sample ISO image with UEFI and legacy BIOS boot support.
+* Download and prepare optional external dependencies, e.g. the EFI boot loader images, OVMF, Syslinux, sample kernel/initramfs files, etc.
+* Probably some other scripts.
+
+Please consider all of the helper scritps just as helper scripts. Their purpose is to give you some basic knowledge about the UEFI boot loader insfrastructure. It is up to you to prepare your boot media.
 
 ### Dependencies
 
@@ -76,5 +84,4 @@ The [todo-release](http://release-todo.toto) archive contains the folowing:
 
 * Kay Sievers
 * Harald Hoyer
-* ... and many others (for complete list see git history [here](https://www.github.com/systemd/systemd))
-
+* ... and many others (for complete list see git history [here](https://www.github.com/systemd/systemd)).
