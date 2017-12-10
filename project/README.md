@@ -21,15 +21,28 @@ If you want to build 'systemd-boot' from scratch, then you'll need to add all Mi
 These are the steps you need to follow in order to build and install 'systemd-boot':
 
 ```
+# Assuming you are in the main GitHub project folder
+
+# Remove the old artifacts.
+rm -rf systemd-boot_installed
+
+# Navigate to the main project directory.
+cd project
+
+# Configure, build and install 'systemd-boot' in local folder.
 ./autogen.sh
-./configure --prefix=/usr
+./configure --prefix=$PWD/../systemd-boot_installed/usr
 make
-sudo make install
+make install
 ```
 
-On 32-bit x86 machines you may need to manually tweak the 'configure' script and some of the 'gnu-efi' header locations because the 'gnu-efi' headers are installed for 'ia32' architectures but the actual architecture is most likely 'i686' or similar. The same applies for the 'gnu-efi' linker which contains the architecture in its name 'ia32' and it may not be resolved if the actual architecture is 'i686' or similar.
+The above set of commands will preapre and install all 'systemd-boot' artifacts in the local folder ``project/systemd-boot_installed/usr``. You can find the generated EFI boot loader image here:
 
-I had no such build issues on 'x86_64' macine.
+``project/systemd-boot_installed/usr/lib/systemd-boot/systemd-boot{ARCH}.efi``
+
+On 32-bit x86 machines you may need to manually tweak the 'configure.ac' script and/or some of the 'gnu-efi' header locations because the 'gnu-efi' headers are installed for 'ia32' architectures but the actual architecture is most likely 'i686' or similar. The same applies for the 'gnu-efi' linker which contains the architecture in its name 'ia32' and it may not be resolved if the actual architecture is 'i686' or similar.
+
+I had no such build issues on 'x86_64' machine.
 
 Note that installation of 'sytemd-boot' to the EFI System Partition must be handled separately. It is usually done by ```bootctl``` command line utility from the 'systemd' package.
 
