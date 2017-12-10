@@ -52,7 +52,14 @@ mll_64() {
 }
 
 systemd_boot_precompiled() {
-  echo "TODO..."
+  mkdir -p work/uefi_root
+  cd work/uefi_root
+  wget -O systemd-boot.tar.xz -c http://github.com/ivandavidov/systemd-boot/releases/download/untagged-9be837de4fff0ff8709e/systemd-boot_10-Dec-2017.tar.xz
+  tar -xvf systemd-boot.tar.xz
+  cd `ls -d systemd-boot_*`
+  cp -r * ..
+  cd ..
+  rm -rf systemd-boot*
   cd $SRC_DIR
 }
 
@@ -60,6 +67,7 @@ systemd_boot_precompiled() {
 #ovmf_x86_64
 #syslinux
 #mll_32
-mll_64
+#mll_64
+systemd_boot_precompiled
 
 cd $SRC_DIR
