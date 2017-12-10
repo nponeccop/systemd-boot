@@ -8,11 +8,11 @@
 
 If you want to build 'systemd-boot' from scratch, then you'll need to add all [Minimal Linux Live] (http://github.com/ivandavidov/minimal "Minimal Linux Live") dependencies and the 'systemd-boot' build dependencies (Ubuntu):
 
-``sudo apt install wget make gawk gcc bc xorriso gnu-efi dh-autoreconf``
+* ``sudo apt install wget make gawk gcc bc xorriso gnu-efi dh-autoreconf``
 
 If you have already built Minimal Linux Live, then you need to add just 2 more build dependencies (Ubuntu):
 
-``sudo apt install gnu-efi dh-autoreconf``
+* ``sudo apt install gnu-efi dh-autoreconf``
 
 These are the steps you need to follow in order to build and install 'systemd-boot':
 
@@ -34,11 +34,11 @@ make install
 
 The above set of commands will preapre and install all 'systemd-boot' artifacts in the following local folder:
 
-``systemd-boot_installed/usr``.
+* ``systemd-boot_installed/usr``
 
 You can find the generated EFI boot loader image here:
 
-``systemd-boot_installed/usr/lib/systemd-boot/systemd-boot{ARCH}.efi``
+* ``systemd-boot_installed/usr/lib/systemd-boot/systemd-boot{ARCH}.efi``
 
 For your convenience, the above described build process has been automated in the [build_project.sh](https://github.com/ivandavidov/systemd-boot/blob/master/build_project.sh) shell script. 
 
