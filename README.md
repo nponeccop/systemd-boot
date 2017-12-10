@@ -1,4 +1,4 @@
-# systemd-boot
+## systemd-boot
 
 ``systemd-boot`` is a simple UEFI boot manager. Its main job is to launch the selected boot menu entry. 'systemd-boot' leverages APIs provided by the UEFI and offloads all the heavy lifting to the firmware (e.g. loading files from disk, executing EFI images). This allows for very minimal implementation, but feature complete to support common usecases (desktop, laptop).
 
@@ -13,7 +13,7 @@ The raw source code, along with build documentation can be found in the [project
 
 The shell scripts in the main folder rely on the precompiled binaries and on other third party software. You don't need these scripts, nor you need the third party software, unless you want to build custom Minimal Linux Live ISO image which boots on UEFI systems. This serves as proof of concept that the precompiled binaries work fine.
 
-### How to use
+## How to use
 
 Good documentation regarding 'systemd-boot' can be found here:
 
