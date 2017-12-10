@@ -131,12 +131,7 @@ AC_DEFINE_UNQUOTED(SD_TPM_PCR, [$SD_TPM_PCR], [TPM PCR register number to use])
 # ------------------------------------------------------------------------------
 AC_ARG_WITH([bashcompletiondir],
         AS_HELP_STRING([--with-bashcompletiondir=DIR], [bash completions directory]),
-        [],
-        [AS_IF([$($PKG_CONFIG --exists bash-completion)], [
-                with_bashcompletiondir=$($PKG_CONFIG --variable=completionsdir bash-completion)
-        ] , [
-                with_bashcompletiondir=${datadir}/bash-completion/completions
-        ])])
+        [], [with_bashcompletiondir=${prefix}/usr/share/bash-completion/completions])
 AM_CONDITIONAL(ENABLE_BASH_COMPLETION, [test "$with_bashcompletiondir" != "no"])
 AX_NORMALIZE_PATH([with_bashcompletiondir])
 AC_SUBST([bashcompletiondir], [$with_bashcompletiondir])
@@ -144,7 +139,7 @@ AC_SUBST([bashcompletiondir], [$with_bashcompletiondir])
 # ------------------------------------------------------------------------------
 AC_ARG_WITH([zshcompletiondir],
         AS_HELP_STRING([--with-zshcompletiondir=DIR], [zsh completions directory]),
-        [], [with_zshcompletiondir=${datadir}/zsh/site-functions])
+        [], [with_zshcompletiondir=${prefix}/usr/share/zsh/site-functions])
 AM_CONDITIONAL(ENABLE_ZSH_COMPLETION, [test "$with_zshcompletiondir" != "no"])
 AX_NORMALIZE_PATH([with_zshcompletiondir])
 AC_SUBST([zshcompletiondir], [$with_zshcompletiondir])
