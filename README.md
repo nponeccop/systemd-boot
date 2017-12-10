@@ -2,7 +2,7 @@
 
 ``systemd-boot`` is a simple UEFI boot manager. Its main job is to launch the selected boot menu entry. 'systemd-boot' leverages APIs provided by the UEFI and offloads all the heavy lifting to the firmware (e.g. loading files from disk, executing EFI images). This allows for very minimal implementation, but feature complete to support common usecases (desktop, laptop).
 
-'systemd-boot' fully supports The Freedesktop [Boot Loader Specification](https://www.freedesktop.org/wiki/Specifications/BootLoaderSpec/).
+'systemd-boot' fully supports the [Freedesktop Boot Loader Specification](https://www.freedesktop.org/wiki/Specifications/BootLoaderSpec).
 
 The primary use case of this project is to provide precompiled 'systemd-boot' EFI boot loader stubs which in turn support the UEFI boot process of [Minimal Linux Live](http://github.com/ivandavidov/minimal "Minimal Linux Live"). The original project is [here](https://github.com/msekletar/systemd-boot "systemd-boot").
 
