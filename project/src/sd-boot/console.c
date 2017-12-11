@@ -1,5 +1,4 @@
-/*-*- Mode: C; c-basic-offset: 8; indent-tabs-mode: nil -*-*/
-
+/* SPDX-License-Identifier: LGPL-2.1+ */
 /*
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -95,12 +94,8 @@ EFI_STATUS console_key_read(UINT64 *key, BOOLEAN wait) {
         }
 
         /* wait until key is pressed */
-        if (wait) {
-                if (TextInputEx)
-                        uefi_call_wrapper(BS->WaitForEvent, 3, 1, &TextInputEx->WaitForKeyEx, &index);
-                else
-                        uefi_call_wrapper(BS->WaitForEvent, 3, 1, &ST->ConIn->WaitForKey, &index);
-        }
+        if (wait)
+                uefi_call_wrapper(BS->WaitForEvent, 3, 1, &ST->ConIn->WaitForKey, &index);
 
         if (TextInputEx) {
                 EFI_KEY_DATA keydata;

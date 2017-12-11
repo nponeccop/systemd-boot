@@ -115,18 +115,20 @@ systemd_boot_headers = \
 	src/sd-boot/util.h \
 	src/sd-boot/console.h \
 	src/sd-boot/graphics.h \
-	src/sd-boot/pefile.h \
+	src/sd-boot/pe.h \
 	src/sd-boot/measure.h \
-	src/sd-boot/disk.h
+	src/sd-boot/disk.h \
+	src/sd-boot/shim.h
 
 systemd_boot_sources = \
 	src/sd-boot/util.c \
 	src/sd-boot/console.c \
 	src/sd-boot/graphics.c \
-	src/sd-boot/pefile.c \
+	src/sd-boot/pe.c \
 	src/sd-boot/disk.c \
 	src/sd-boot/measure.c \
-	src/sd-boot/boot.c
+	src/sd-boot/boot.c \
+	src/sd-boot/shim.c
 
 systemd_boot_objects = $(addprefix $(top_builddir)/,$(systemd_boot_sources:.c=.o))
 systemd_boot_solib = $(top_builddir)/src/sd-boot/systemd_boot.so
@@ -160,7 +162,7 @@ $(systemd_boot): $(systemd_boot_solib)
 # ------------------------------------------------------------------------------
 stub_headers = \
 	src/sd-boot/util.h \
-	src/sd-boot/pefile.h \
+	src/sd-boot/pe.h \
 	src/sd-boot/disk.h \
 	src/sd-boot/graphics.h \
 	src/sd-boot/splash.h \
@@ -169,7 +171,7 @@ stub_headers = \
 
 stub_sources = \
 	src/sd-boot/util.c \
-	src/sd-boot/pefile.c \
+	src/sd-boot/pe.c \
 	src/sd-boot/disk.c \
 	src/sd-boot/graphics.c \
 	src/sd-boot/splash.c \

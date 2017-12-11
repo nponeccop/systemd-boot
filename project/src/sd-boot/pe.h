@@ -1,5 +1,4 @@
-/*-*- Mode: C; c-basic-offset: 8; indent-tabs-mode: nil -*-*/
-
+/* SPDX-License-Identifier: LGPL-2.1+ */
 /*
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +16,8 @@
 #ifndef __SDBOOT_PEFILE_H
 #define __SDBOOT_PEFILE_H
 
-EFI_STATUS pefile_locate_sections(EFI_FILE *dir, CHAR16 *path,
-                                  CHAR8 **sections, UINTN *addrs, UINTN *offsets, UINTN *sizes);
+EFI_STATUS pe_memory_locate_sections(CHAR8 *base,
+                                     CHAR8 **sections, UINTN *addrs, UINTN *offsets, UINTN *sizes);
+EFI_STATUS pe_file_locate_sections(EFI_FILE *dir, CHAR16 *path,
+                                   CHAR8 **sections, UINTN *addrs, UINTN *offsets, UINTN *sizes);
 #endif

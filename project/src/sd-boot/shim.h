@@ -10,14 +10,23 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  *
- * Copyright (C) 2012-2013 Kay Sievers <kay@vrfy.org>
- * Copyright (C) 2012 Harald Hoyer <harald@redhat.com>
- * Copyright (C) 2013 Intel Corporation
- *   Authored by Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+ * Port to systemd-boot
+ * Copyright 2017 Max Resch <resch.max@gmail.com>
+ *
+ * Security Policy Handling
+ * Copyright 2012 <James.Bottomley@HansenPartnership.com>
+ * https://github.com/mjg59/efitools
  */
 
-#ifndef __SDBOOT_GRAPHICS_H
-#define __SDBOOT_GRAPHICS_H
+#ifndef __SDBOOT_SHIM_H
+#define __SDBOOT_SHIM_H
 
-EFI_STATUS graphics_mode(BOOLEAN on);
+BOOLEAN shim_loaded(void);
+
+BOOLEAN secure_boot_enabled(void);
+
+EFI_STATUS security_policy_install(void);
+
+EFI_STATUS security_policy_uninstall(void);
+
 #endif

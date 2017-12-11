@@ -1,5 +1,4 @@
-/*-*- Mode: C; c-basic-offset: 8; indent-tabs-mode: nil -*-*/
-
+/* SPDX-License-Identifier: LGPL-2.1+ */
 /*
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +21,9 @@
 #include "disk.h"
 #include "graphics.h"
 #include "linux.h"
-#include "pefile.h"
+#include "measure.h"
+#include "pe.h"
+#include "shim.h"
 #include "util.h"
 
 #ifndef EFI_OS_INDICATIONS_BOOT_TO_FW_UI
@@ -30,7 +31,7 @@
 #endif
 
 /* magic string to find in the binary image */
-static const char __attribute__((used)) magic[] = "#### LoaderInfo: systemd-boot " VERSION " ####";
+static const char __attribute__((used)) magic[] = "#### LoaderInfo: systemd-boot " PACKAGE_VERSION " ####";
 
 static const EFI_GUID global_guid = EFI_GLOBAL_VARIABLE;
 
@@ -364,7 +365,7 @@ static VOID print_status(Config *config, CHAR16 *loaded_image_path) {
         uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_LIGHTGRAY|EFI_BACKGROUND_BLACK);
         uefi_call_wrapper(ST->ConOut->ClearScreen, 1, ST->ConOut);
 
-        Print(L"systemd-boot version:   " VERSION "\n");
+        Print(L"systemd-boot version:   " PACKAGE_VERSION "\n");
         Print(L"architecture:           " EFI_MACHINE_TYPE_NAME "\n");
         Print(L"loaded image:           %s\n", loaded_image_path);
         Print(L"UEFI specification:     %d.%02d\n", ST->Hdr.Revision >> 16, ST->Hdr.Revision & 0xffff);
@@ -383,6 +384,9 @@ static VOID print_status(Config *config, CHAR16 *loaded_image_path) {
                 Print(L"SetupMode:              %s\n", *b > 0 ? L"setup" : L"user");
                 FreePool(b);
         }
+
+        if (shim_loaded())
+                Print(L"Shim:                   present\n");
 
         if (efivar_get_raw(&global_guid, L"OsIndicationsSupported", &b, &size) == EFI_SUCCESS) {
                 Print(L"OsIndicationsSupported: %d\n", (UINT64)*b);
@@ -782,7 +786,7 @@ static BOOLEAN menu_run(Config *config, ConfigEntry **chosen_entry, CHAR16 *load
                         break;
 
                 case KEYPRESS(0, 0, 'v'):
-                        status = PoolPrint(L"systemd-boot " VERSION " (" EFI_MACHINE_TYPE_NAME "), UEFI Specification %d.%02d, Vendor %s %d.%02d",
+                        status = PoolPrint(L"systemd-boot " PACKAGE_VERSION " (" EFI_MACHINE_TYPE_NAME "), UEFI Specification %d.%02d, Vendor %s %d.%02d",
                                            ST->Hdr.Revision >> 16, ST->Hdr.Revision & 0xffff,
                                            ST->FirmwareVendor, ST->FirmwareRevision >> 16, ST->FirmwareRevision & 0xffff);
                         break;
@@ -1302,10 +1306,29 @@ static VOID config_default_entry_select(Config *config) {
         config->idx_default = -1;
 }
 
+static BOOLEAN find_nonunique(ConfigEntry **entries, UINTN entry_count) {
+        BOOLEAN non_unique = FALSE;
+        UINTN i, k;
+
+        for (i = 0; i < entry_count; i++)
+                entries[i]->non_unique = FALSE;
+
+        for (i = 0; i < entry_count; i++)
+                for (k = 0; k < entry_count; k++) {
+                        if (i == k)
+                                continue;
+                        if (StrCmp(entries[i]->title_show, entries[k]->title_show) != 0)
+                                continue;
+
+                        non_unique = entries[i]->non_unique = entries[k]->non_unique = TRUE;
+                }
+
+        return non_unique;
+}
+
 /* generate a unique title, avoiding non-distinguishable menu entries */
 static VOID config_title_generate(Config *config) {
-        UINTN i, k;
-        BOOLEAN unique;
+        UINTN i;
 
         /* set title */
         for (i = 0; i < config->entry_count; i++) {
@@ -1318,20 +1341,7 @@ static VOID config_title_generate(Config *config) {
                 config->entries[i]->title_show = StrDuplicate(title);
         }
 
-        unique = TRUE;
-        for (i = 0; i < config->entry_count; i++) {
-                for (k = 0; k < config->entry_count; k++) {
-                        if (i == k)
-                                continue;
-                        if (StrCmp(config->entries[i]->title_show, config->entries[k]->title_show) != 0)
-                                continue;
-
-                        unique = FALSE;
-                        config->entries[i]->non_unique = TRUE;
-                        config->entries[k]->non_unique = TRUE;
-                }
-        }
-        if (unique)
+        if (!find_nonunique(config->entries, config->entry_count))
                 return;
 
         /* add version to non-unique titles */
@@ -1346,23 +1356,9 @@ static VOID config_title_generate(Config *config) {
                 s = PoolPrint(L"%s (%s)", config->entries[i]->title_show, config->entries[i]->version);
                 FreePool(config->entries[i]->title_show);
                 config->entries[i]->title_show = s;
-                config->entries[i]->non_unique = FALSE;
         }
 
-        unique = TRUE;
-        for (i = 0; i < config->entry_count; i++) {
-                for (k = 0; k < config->entry_count; k++) {
-                        if (i == k)
-                                continue;
-                        if (StrCmp(config->entries[i]->title_show, config->entries[k]->title_show) != 0)
-                                continue;
-
-                        unique = FALSE;
-                        config->entries[i]->non_unique = TRUE;
-                        config->entries[k]->non_unique = TRUE;
-                }
-        }
-        if (unique)
+        if (!find_nonunique(config->entries, config->entry_count))
                 return;
 
         /* add machine-id to non-unique titles */
@@ -1380,24 +1376,10 @@ static VOID config_title_generate(Config *config) {
                 s = PoolPrint(L"%s (%s)", config->entries[i]->title_show, m);
                 FreePool(config->entries[i]->title_show);
                 config->entries[i]->title_show = s;
-                config->entries[i]->non_unique = FALSE;
                 FreePool(m);
         }
 
-        unique = TRUE;
-        for (i = 0; i < config->entry_count; i++) {
-                for (k = 0; k < config->entry_count; k++) {
-                        if (i == k)
-                                continue;
-                        if (StrCmp(config->entries[i]->title_show, config->entries[k]->title_show) != 0)
-                                continue;
-
-                        unique = FALSE;
-                        config->entries[i]->non_unique = TRUE;
-                        config->entries[k]->non_unique = TRUE;
-                }
-        }
-        if (unique)
+        if (!find_nonunique(config->entries, config->entry_count))
                 return;
 
         /* add file name to non-unique titles */
@@ -1483,7 +1465,7 @@ static VOID config_entry_add_osx(Config *config) {
                         root = LibOpenRoot(handles[i]);
                         if (!root)
                                 continue;
-                        found = config_entry_add_loader_auto(config, handles[i], root, NULL, L"auto-osx", 'a', L"OS X",
+                        found = config_entry_add_loader_auto(config, handles[i], root, NULL, L"auto-osx", 'a', L"macOS",
                                                              L"\\System\\Library\\CoreServices\\boot.efi");
                         uefi_call_wrapper(root->Close, 1, root);
                         if (found)
@@ -1540,7 +1522,7 @@ static VOID config_entry_add_linux( Config *config, EFI_LOADED_IMAGE *loaded_ima
                                 continue;
 
                         /* look for .osrel and .cmdline sections in the .efi binary */
-                        err = pefile_locate_sections(linux_dir, f->FileName, sections, addrs, offs, szs);
+                        err = pe_file_locate_sections(linux_dir, f->FileName, sections, addrs, offs, szs);
                         if (EFI_ERROR(err))
                                 continue;
 
@@ -1646,6 +1628,17 @@ static EFI_STATUS image_start(EFI_HANDLE parent_image, const Config *config, con
                 }
                 loaded_image->LoadOptions = options;
                 loaded_image->LoadOptionsSize = (StrLen(loaded_image->LoadOptions)+1) * sizeof(CHAR16);
+
+#if ENABLE_TPM
+                /* Try to log any options to the TPM, especially to catch manually edited options */
+                err = tpm_log_event(SD_TPM_PCR,
+                                    (EFI_PHYSICAL_ADDRESS) loaded_image->LoadOptions,
+                                    loaded_image->LoadOptionsSize, loaded_image->LoadOptions);
+                if (EFI_ERROR(err)) {
+                        Print(L"Unable to add image options measurement: %r", err);
+                        uefi_call_wrapper(BS->Stall, 1, 200 * 1000);
+                }
+#endif
         }
 
         efivar_set_time_usec(L"LoaderTimeExecUSec", 0);
@@ -1707,7 +1700,7 @@ EFI_STATUS efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE *sys_table) {
         InitializeLib(image, sys_table);
         init_usec = time_usec();
         efivar_set_time_usec(L"LoaderTimeInitUSec", init_usec);
-        efivar_set(L"LoaderInfo", L"systemd-boot " VERSION, FALSE);
+        efivar_set(L"LoaderInfo", L"systemd-boot " PACKAGE_VERSION, FALSE);
         s = PoolPrint(L"%s %d.%02d", ST->FirmwareVendor, ST->FirmwareRevision >> 16, ST->FirmwareRevision & 0xffff);
         efivar_set(L"LoaderFirmwareInfo", s, FALSE);
         FreePool(s);
@@ -1734,6 +1727,14 @@ EFI_STATUS efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE *sys_table) {
                 return EFI_LOAD_ERROR;
         }
 
+        if (secure_boot_enabled() && shim_loaded()) {
+                err = security_policy_install();
+                if (EFI_ERROR(err)) {
+                        Print(L"Error installing security policy: %r ", err);
+                        uefi_call_wrapper(BS->Stall, 1, 3 * 1000 * 1000);
+                        return err;
+                }
+        }
 
         /* the filesystem path to this image, to prevent adding ourselves to the menu */
         loaded_image_path = DevicePathToStr(loaded_image->FilePath);
@@ -1776,7 +1777,7 @@ EFI_STATUS efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE *sys_table) {
 
         config_title_generate(&config);
 
-        /* select entry by configured pattern or EFI LoaderDefaultEntry= variable*/
+        /* select entry by configured pattern or EFI LoaderDefaultEntry= variable */
         config_default_entry_select(&config);
 
         /* if no configured entry to select from was found, enable the menu */

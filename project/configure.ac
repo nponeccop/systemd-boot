@@ -18,10 +18,10 @@
 
 AC_PREREQ([2.64])
 AC_INIT([systemd-boot],
-        [232],
-        [http://github.com/systemd/systemd-boot/issues],
+        [11-Dec-2017],
+        [http://github.com/ivandavidov/systemd-boot/issues],
         [systemd-boot],
-        [http://github.com/systemd/systemd-boot])
+        [http://github.com/ivandavidov/systemd-boot])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])

@@ -1,5 +1,4 @@
-/*-*- Mode: C; c-basic-offset: 8; indent-tabs-mode: nil -*-*/
-
+/* SPDX-License-Identifier: LGPL-2.1+ */
 /*
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -283,9 +282,9 @@ EFI_STATUS graphics_splash(UINT8 *content, UINTN len, const EFI_GRAPHICS_OUTPUT_
         if (EFI_ERROR(err))
                 goto err;
 
-        if(dib->x < GraphicsOutput->Mode->Info->HorizontalResolution)
+        if (dib->x < GraphicsOutput->Mode->Info->HorizontalResolution)
                 x_pos = (GraphicsOutput->Mode->Info->HorizontalResolution - dib->x) / 2;
-        if(dib->y < GraphicsOutput->Mode->Info->VerticalResolution)
+        if (dib->y < GraphicsOutput->Mode->Info->VerticalResolution)
                 y_pos = (GraphicsOutput->Mode->Info->VerticalResolution - dib->y) / 2;
 
         uefi_call_wrapper(GraphicsOutput->Blt, 10, GraphicsOutput,
