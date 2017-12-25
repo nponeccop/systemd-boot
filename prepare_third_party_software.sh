@@ -7,7 +7,7 @@ SRC_DIR=$PWD
 ovmf_x86() {
   mkdir -p work/ovmf
   cd work/ovmf
-  wget -O ovmf-32.zip -c https://sourceforge.net/projects/edk2/files/OVMF/OVMF-IA32-r15214.zip
+  wget --max-redirect 999 -O ovmf-32.zip -c https://sourceforge.net/projects/edk2/files/OVMF/OVMF-IA32-r15214.zip
   unzip -p ovmf-32.zip OVMF.fd > ovmf-32.fd
   cd $SRC_DIR
 }
@@ -15,7 +15,7 @@ ovmf_x86() {
 ovmf_x86_64() {
   mkdir -p work/ovmf
   cd work/ovmf
-  wget -O ovmf-64.zip -c https://sourceforge.net/projects/edk2/files/OVMF/OVMF-X64-r15214.zip
+  wget --max-redirect 999 -O ovmf-64.zip -c https://sourceforge.net/projects/edk2/files/OVMF/OVMF-X64-r15214.zip
   unzip -p ovmf-64.zip OVMF.fd > ovmf-64.fd
   cd $SRC_DIR
 }
