@@ -26,4 +26,16 @@ cd $SRC_DIR/work/release
 
 tar -cvf $RELEASE_NAME.tar $RELEASE_NAME
 
-xz -z -k -9 -e systemd-boot_10-Dec-2017.tar
+xz -z -k -9 -e systemd-boot_${DATE_PARSED}.tar
+
+cat << CEOF
+
+  ############################################################
+  #                                                          #
+  #  systemd-boot release '${DATE_PARSED}' has been generated.  #
+  #                                                          #
+  #    work/release/systemd-boot_${DATE_PARSED}.tar.xz          #
+  #                                                          #
+  ############################################################
+
+CEOF

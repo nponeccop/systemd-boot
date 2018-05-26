@@ -35,7 +35,26 @@ CEOF
 else
   cat << CEOF
 
-  There is something wrong with the build process. 
+  There is something wrong with the build process.
 
 CEOF
+fi
+
+if [ -f systemd-boot_installed/usr/lib/systemd-boot/systemd-bootx64.efi ] ; then
+  if [ -f work/uefi_root/EFI/BOOT/BOOTx64.EFI ] ; then
+    cp systemd-boot_installed/usr/lib/systemd-boot/systemd-bootx64.efi \
+      work/uefi_root/EFI/BOOT/BOOTx64.EFI
+
+  cat << CEOF
+
+  ##############################################
+  #                                            #
+  #  UEFI boot loader image has been updated.  #
+  #                                            #
+  #    work/uefi_root/EFI/BOOT/BOOTx64.EFI     #
+  #                                            #
+  ##############################################
+
+CEOF
+  fi
 fi
