@@ -2,7 +2,7 @@
 
 ``systemd-boot`` (previously known as [gummyboot](https://en.wikipedia.org/wiki/Gummiboot_(software))) is a simple UEFI boot manager. Its main job is to launch the selected boot menu entry. 'systemd-boot' leverages APIs provided by the UEFI and offloads all the heavy lifting to the firmware (e.g. loading files from disk, executing EFI images). This allows for very minimal implementation, but feature complete to support common usecases (desktop, laptop).
 
-Precompiled 'systemd-boot' UEFI images and sample configuration files are available in the [release](https://github.com/ivandavidov/systemd-boot/releases) section. The latest stable release is [systemd-boot_10-Dec-2017](https://github.com/ivandavidov/systemd-boot/releases/tag/systemd-boot_10-Dec-2017). Each release contains the following artifacts:
+Precompiled 'systemd-boot' UEFI images and sample configuration files are available in the [release](https://github.com/ivandavidov/systemd-boot/releases) section. The latest stable release is [systemd-boot_26-May-2018](https://github.com/ivandavidov/systemd-boot/releases/tag/systemd-boot_26-May-2018). Each release contains the following artifacts:
 
 * UEFI compliant directory structure with general purpose 'systemd-boot' UEFI boot loader images for 'x86' and 'x86_64' architectures.
 * Sample configuration files for 'x86' and 'x86_64' machines which describe the boot entries for [Minimal Linux Live](http://github.com/ivandavidov/minimal "Minimal Linux Live").
