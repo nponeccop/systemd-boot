@@ -18,7 +18,7 @@
 
 AC_PREREQ([2.64])
 AC_INIT([systemd-boot],
-        [11-Dec-2017],
+        [26-May-2018],
         [http://github.com/ivandavidov/systemd-boot/issues],
         [systemd-boot],
         [http://github.com/ivandavidov/systemd-boot])
