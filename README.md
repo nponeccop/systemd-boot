@@ -1,6 +1,6 @@
 ## systemd-boot
 
-``systemd-boot`` (previously known as [gummyboot](https://en.wikipedia.org/wiki/Gummiboot_(software))) is a simple UEFI boot manager. Its main job is to launch the selected boot menu entry. 'systemd-boot' leverages APIs provided by the UEFI and offloads all the heavy lifting to the firmware (e.g. loading files from disk, executing EFI images). This allows for very minimal implementation, but feature complete to support common usecases (desktop, laptop).
+``systemd-boot`` (previously known as [gummyboot](https://en.wikipedia.org/wiki/Gummiboot_(software))) is a simple UEFI boot manager. Its main job is to launch the selected boot menu entry. 'systemd-boot' leverages APIs provided by the UEFI and offloads all the heavy lifting to the firmware (e.g. loading files from disk, executing EFI images). This allows for ф very minimal implementation, but for a feature complete one to support common use cases (desktop, laptop).
 
 Precompiled 'systemd-boot' UEFI images and sample configuration files are available in the [release](https://github.com/ivandavidov/systemd-boot/releases) section. The latest stable release is [systemd-boot_26-May-2018](https://github.com/ivandavidov/systemd-boot/releases/tag/systemd-boot_26-May-2018). Each release contains the following artifacts:
 
@@ -23,7 +23,7 @@ Good documentation regarding 'systemd-boot' can be found here:
 The helper scripts in the main folder do the following:
 
 * Download and prepare third party software dependencies, e.g. the precompiled UEFI boot loader images, OVMF images, Syslinux, sample kernel/initramfs files, etc. 
-* Genrate sample 'El Torito' boot image as described in UEFI sepcification 2.7, sections 13.3.1.x and 13.3.2.x.
+* Genrate sample 'El Torito' boot image as described in UEFI specification 2.7, sections 13.3.1.x and 13.3.2.x.
 * Generate sample ISO image with UEFI boot support.
 * Run [QEMU](https://www.qemu.org) with UEFI enabled configuration and attached sample ISO image.
 
@@ -31,4 +31,4 @@ Note that you need QEMU on your system in order to test the sample ISO images. Y
 
 * ``sudo apt install qemu``
 
-Please consider all helper scritps just as helper scripts. You can use them to gain some more knowledge about the 'systemd-boot' UEFI boot loader insfrastructure and how to create UEFI compatible ISO images.
+Please consider all helper scripts just helper scripts. You can use them to gain some more knowledge about the 'systemd-boot' UEFI boot loader insfrastructure and how to create UEFI compatible ISO images.
